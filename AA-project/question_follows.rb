@@ -1,0 +1,3 @@
+class QuestionFollows
+
+end
