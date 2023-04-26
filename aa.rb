@@ -31,3 +31,41 @@ pattern1 = "aaaa"
 str1 = "dog cat cat dog"
 
 # p pattern?(pattern1, str1)
+
+
+
+def string_editor(s, t)
+    new_s = ""   #new_s = "ac"
+    new_t = "" 
+
+    i = 0 
+    while i < s.length 
+        if s[i] != "#"
+            new_s += s[i]  #s[3] = c
+        elsif s[i] == "#" && new_s.length == 0 
+            new_s = ""
+        else
+            new_s[-1] = ""
+        end
+        i += 1
+    end
+
+    i = 0 
+    while i < t.length 
+        if t[i] != "#"
+            new_t += t[i]
+        elsif t[i] == "#" && new_t.length == 0
+            new_t = ""
+
+        else
+            new_t[-1] = ""
+        end
+        i += 1
+    end
+    # p new_s
+    # p new_t
+    new_s == new_t
+
+end
+
+p string_editor("a##c", "#a#c")
