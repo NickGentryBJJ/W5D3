@@ -12,15 +12,15 @@ attr_accessor :title, :body, :id
 
     def self.find_by_id(id)
         question_data = QuestionsDatabase.instance.execute(<<-SQL, id)
-            SELECT 
+            SELECT
                 *
-            FROM 
+            FROM
                 questions
             WHERE
-                id = ? 
+                id = ?
         SQL
-        return nil unless question_data.length > 0 
-        # Question.new(question_data.first) 
+        return nil unless question_data.length > 0
+        # Question.new(question_data.first)
         return question_data
     end
 
@@ -28,5 +28,28 @@ attr_accessor :title, :body, :id
         data = QuestionsDatabase.instance.execute('select * from questions')
         data.map { |datum| Question.new(datum)}
     end
-    
+
+    def insert
+        raise "#{self} already in database" if self.id
+        QuestionsDatabase.instance.execute(<<-SQL, self.title, self.body)
+            INSERT INTO
+                questions (title, body)
+            VALUES
+                (?, ?)
+        SQL
+        self.id = QuestionsDatabase.instance.last_insert_row_id
+    end
+
+    def update
+        raise "#{self} not in database" unless self.id
+        QuestionsDatabase.instance.execute(<<-SQL, self.id, self.title, self.body)
+            UPDATE
+                questions
+            SET
+                id = ?, title = ?, body = ?
+            WHERE
+                id = ?
+        SQL
+    end
+
 end
